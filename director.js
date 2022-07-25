@@ -1,6 +1,6 @@
-const [pwd, file, input] = process.argv;
+const [pwd, file, ...inputs] = process.argv;
 
-const VERBOSE = input ==='-v'
+const VERBOSE = inputs.indexOf('-v')!= -1
 
 DEFAULT_ROBOT_LIST = ['robbie', 'jane', 'bob']
 
