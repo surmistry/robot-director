@@ -1,11 +1,12 @@
 const [pwd, file, ...inputs] = process.argv;
 
 const VERBOSE = inputs.indexOf('-v')!= -1
+const INPUTS = inputs.indexOf('-i') != -1
 
-DEFAULT_ROBOT_LIST = ['robbie', 'jane', 'bob']
+inputs.splice(inputs.indexOf('-i'), 1)
 
-// Represent data just for the spaces that are occupied, not for the space in-between
-DEFAULT_DELIVERY_LIST = [[0, -1], [1, 1], [1, 0], [0, 1], [2, 0]];
+const [DIRECTIONS, ROBOTS, DELIVERIES,..._] = INPUTS ? inputs : []
+// console.log(DIRECTIONS, ROBOTS, DELIVERIES)
 
 const createDict = (robots) => robots.reduce((dictionary, robot) => {
   dictionary[robot] = {
@@ -65,8 +66,15 @@ const updateRobotDelivered = (status, robot, deliveries, index) => {
 
 const createDeliveryTracker =(deliveries) => deliveries.map(delivery => ({occupied: false, coord: delivery}))
 
+
+const DEFAULT_ROBOT_LIST = ['robbie', 'jane', 'bob']
+
+// Represent data just for the spaces that are occupied, not for the space in-between
+const DEFAULT_DELIVERY_LIST = [[0, -1], [1, 1], [1, 0], [0, 1], [2, 0]];
+const DEFAULT_DIRECTIONS_LIST = 'vv>><^';
+
 const directRobots = (
-  directions,
+  directions = DEFAULT_DIRECTIONS_LIST,
   robotList = DEFAULT_ROBOT_LIST,
   deliveryList = DEFAULT_DELIVERY_LIST
 ) => {
@@ -111,6 +119,6 @@ const directRobots = (
   if(VERBOSE) console.log(robotDict)
 }
 
-directRobots('vv>><^')
+directRobots(DIRECTIONS, ROBOTS, DELIVERIES)
 
 module.exports = directRobots
