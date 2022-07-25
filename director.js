@@ -43,6 +43,8 @@ const directRobots = (directions, robotList = DEFAULT_ROBOT_LIST, deliveryList =
     let robot = robotDict[robotList[robotIndex]];
 
     robotDict[robotList[robotIndex]] = moveRobot(direct, robot);
+    index++;
+    console.log(robotDict)
   }
 }
 
