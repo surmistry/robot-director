@@ -1,3 +1,7 @@
+const [pwd, file, input] = process.argv;
+
+const VERBOSE = input ==='-v'
+
 DEFAULT_ROBOT_LIST = ['robbie', 'jane', 'bob']
 
 // Represent data just for the spaces that are occupied, not for the space in-between
@@ -51,7 +55,7 @@ const checkDelivery = (
 const updateRobotDelivered = (status, robot, deliveries, index) => {
   let returnRobot = {
     ...robot,
-    deliveries: robot.deliveries+1
+    deliveries: status ? robot.deliveries+1 : robot.deliveries
   }
   let updatedDeliveries = [...deliveries];
   updatedDeliveries[index].occupied = status;
@@ -72,33 +76,41 @@ const directRobots = (
   let deliveryTracker = createDeliveryTracker(deliveryList);
   for (let direct of directionArr) {
     
-    // Plenty of room for improvement here, cyclic LinkedList for example
+    // TODO: Cyclic LinkedList instead of modulus
     let robotIndex = index % robotList.length;
     let robotName = robotList[robotIndex];
 
-    // Look to see if robot is occupying a previously delivered package
+    // Look to see if current robot is occupying a previously delivered package
     let robot = robotDict[robotName];
     let previousDelivery = checkDelivery(robot, deliveryTracker);
+    
+    // If the current robot is occupying a delivered coordinate, set it back
     if ((previousDelivery.index !== -1) && (previousDelivery.occupied)){
-      console.log(robotName, ' is finishing a delivery')
+      if (VERBOSE) console.log(robotName, ' is finishing a delivery')
       let tempParams = updateRobotDelivered(false, robot, deliveryTracker, previousDelivery.index);
       robot = tempParams[0]
-      // console.log(`${robotName} found a package, they have made ${updatedRobot.deliveries} deliveries.`)
       deliveryTracker = tempParams[1]
     }
     let updatedRobot = moveRobot(direct, robot);
+
+    // Deliverable logs
     console.log(robotName, direct)
     let deliveryStatus = checkDelivery(updatedRobot, deliveryTracker);
+
+    // Check if the coordinate a robot has just moved into does not have another robot delivering in it
+    // Update the delivery count
     if ((deliveryStatus.index!== -1) && (deliveryStatus.occupied == false)) {
       let tempParams = updateRobotDelivered(true, updatedRobot, deliveryTracker, deliveryStatus.index);
       updatedRobot = tempParams[0]
-      console.log(`${robotName} found a package, they have made ${updatedRobot.deliveries} deliveries.`)
+      if (VERBOSE) console.log(`${robotName} found a package, they have made ${updatedRobot.deliveries} deliveries.`)
       deliveryTracker = tempParams[1]
     }
     robotDict[robotName] = updatedRobot
     index++;
   }
-  console.log(robotDict)
+  if(VERBOSE) console.log(robotDict)
 }
 
 directRobots('vv>><^')
+
+module.exports = directRobots
