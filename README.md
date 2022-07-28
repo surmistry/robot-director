@@ -28,6 +28,8 @@ Use the verbose flag `-v` to print every delivery started and finished.
 
 ## Notes
 
+Branch `bug/create-modules` is to break down the code into contained modules and organize it better.
+
 `directRobots()` being the driving function is not best practice, there were multiple error and edge cases to handle first. There was not enough time to continue cleaning up the code & breaking it down into smaller modules.
 
 `updateRobotDelivered()` makes a shallow copy and returns a temp variable because of a destructuring error in `Node v11.15.0` (not enough time to test later versions on MacOS 10.12.6)
@@ -37,4 +39,4 @@ Use the verbose flag `-v` to print every delivery started and finished.
 - Multiple robots on one tile, if a robot exits it will set the delivery object to "unoccupied" even with other robots on the tile
 - Assuming robots can only complete a delivery as it enters a tile and if there are other robots there it does not complete that delivery
 - Delivery targets can have multiple packages delivered to them
-- Passing an array from a bash command to a node script is ridiculous, feel free to update parameters from [these lines](./director.js#L70)
+- Passing an array from a bash command to a node script is ridiculous, feel free to update parameters from [these lines](./director.js#L6)
