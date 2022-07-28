@@ -1,4 +1,4 @@
-const Deliver = require('./delivery')
+const Delivery = require('./delivery')
 const Robot = require('./robot')
 
-module.exports = {Deliver, OperateRobot: Robot}
+module.exports = {Delivery, Robot}

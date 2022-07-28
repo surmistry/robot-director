@@ -11,4 +11,4 @@ const [DIRECTIONS, ROBOTS, DELIVERIES,..._] = INPUTS ? inputs : []
 /**
  * These defaults and type definitions would be more visible in TypeScript
  */
-directRobots(DIRECTIONS, ROBOTS, DELIVERIES)
+directRobots(DIRECTIONS, ROBOTS, DELIVERIES, VERBOSE)
