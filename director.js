@@ -1,12 +1,5 @@
-const [pwd, file, ...inputs] = process.argv;
-
-const VERBOSE = inputs.indexOf('-v')!= -1
-const INPUTS = inputs.indexOf('-i') != -1
-
-inputs.splice(inputs.indexOf('-i'), 1)
-
-const [DIRECTIONS, ROBOTS, DELIVERIES,..._] = INPUTS ? inputs : []
-// console.log(DIRECTIONS, ROBOTS, DELIVERIES)
+const DeliveryUtils = require('./utils/delivery')
+const RobotUtils = require('./utils/robot')
 
 const createDict = (robots) => robots.reduce((dictionary, robot) => {
   dictionary[robot] = {
@@ -76,7 +69,7 @@ const DEFAULT_DIRECTIONS_LIST = 'vv>><^';
 const directRobots = (
   directions = DEFAULT_DIRECTIONS_LIST,
   robotList = DEFAULT_ROBOT_LIST,
-  deliveryList = DEFAULT_DELIVERY_LIST
+  deliveryList = DEFAULT_DELIVERY_LIST, VERBOSE
 ) => {
   const directionArr = directions.toUpperCase().split('');
   let robotDict = createDict(robotList);
@@ -118,7 +111,5 @@ const directRobots = (
   }
   if(VERBOSE) console.log(robotDict)
 }
-
-directRobots(DIRECTIONS, ROBOTS, DELIVERIES)
 
 module.exports = directRobots
